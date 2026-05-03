@@ -7,3 +7,5 @@ python-dotenv==1.0.1
 email-validator==2.1.1
 SQLAlchemy==2.0.30
 itsdangerous==2.2.0
+pytest==9.0.3
+gunicorn==21.2.0
