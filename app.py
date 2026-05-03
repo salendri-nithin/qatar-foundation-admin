@@ -107,3 +107,6 @@ if __name__ == "__main__":
     flask_app = create_app()
     port = int(os.getenv("PORT", 5000))
     flask_app.run(host="0.0.0.0", port=port, debug=bool(os.getenv("FLASK_DEBUG", True)))
+
+# For gunicorn
+app = create_app()
