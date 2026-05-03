@@ -1,0 +1,159 @@
+{
+  "info": {
+    "name": "Qatar Foundation Admin Portal API",
+    "description": "Complete API collection for the Qatar Foundation Admin Portal backend.",
+    "_postman_id": "qatar-foundation-admin-api",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "BASE_URL", "value": "http://localhost:5000", "type": "string" },
+    { "key": "TOKEN", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": "{{BASE_URL}}/api/health"
+      }
+    },
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Signup",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/api/auth/signup",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"full_name\": \"Salendri Nithin\",\n  \"email\": \"nithin@gmail.com\",\n  \"password\": \"SecurePass@123\",\n  \"confirm_password\": \"SecurePass@123\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const res = pm.response.json();",
+                  "if (res.data && res.data.access_token) {",
+                  "  pm.collectionVariables.set('TOKEN', res.data.access_token);",
+                  "  console.log('Token saved.');",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nithin@gmail.com\",\n  \"password\": \"SecurePass@123\",\n  \"remember_me\": false\n}"
+            }
+          }
+        },
+        {
+          "name": "Login — Remember Me",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/api/auth/login",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nithin@gmail.com\",\n  \"password\": \"SecurePass@123\",\n  \"remember_me\": true\n}"
+            }
+          }
+        },
+        {
+          "name": "Forgot Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/api/auth/forgot-password",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"nithin@gmail.com\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Reset Password",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": "{{BASE_URL}}/api/auth/reset-password",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"token\": \"<paste-token-from-console>\",\n  \"new_password\": \"NewPass@456\",\n  \"confirm_password\": \"NewPass@456\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Opportunities",
+      "item": [
+        {
+          "name": "Get All Opportunities",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/opportunities"
+          }
+        },
+        {
+          "name": "Create Opportunity",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/opportunities",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AI Research Internship\",\n  \"duration\": \"3 months\",\n  \"start_date\": \"2025-09-01\",\n  \"description\": \"Work on cutting-edge AI research projects with our team.\",\n  \"skills\": \"Python, Machine Learning, PyTorch\",\n  \"category\": \"Technology\",\n  \"future_opportunities\": \"Full-time role possible after internship.\",\n  \"max_applicants\": 20\n}"
+            }
+          }
+        },
+        {
+          "name": "Get Single Opportunity",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/opportunities/1"
+          }
+        },
+        {
+          "name": "Update Opportunity",
+          "request": {
+            "method": "PUT",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+            ],
+            "url": "{{BASE_URL}}/api/opportunities/1",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"AI Research Internship — Updated\",\n  \"duration\": \"6 months\",\n  \"start_date\": \"2025-10-01\",\n  \"description\": \"Updated description for the AI research internship.\",\n  \"skills\": \"Python, TensorFlow, PyTorch\",\n  \"category\": \"Data Science\",\n  \"future_opportunities\": \"High potential for full-time conversion.\",\n  \"max_applicants\": 15\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Opportunity",
+          "request": {
+            "method": "DELETE",
+            "header": [{ "key": "Authorization", "value": "Bearer {{TOKEN}}" }],
+            "url": "{{BASE_URL}}/api/opportunities/1"
+          }
+        }
+      ]
+    }
+  ]
+}
